@@ -53,6 +53,34 @@ app.get('/info', (request, response) => {
 app.post('/api/persons', (request, response) => {
   const body = request.body
   
+  console.log('POST REQUEST')
+  console.log('Body:', body)
+
+  // check if name missing
+  if (!body.name) {
+    console.log('Error: name missing')
+    return response.status(400).json({ 
+      error: 'name missing' 
+    })
+  }
+
+  // check if number missing
+  if (!body.number) {
+    console.log('Error: number missing')
+    return response.status(400).json({ 
+      error: 'number missing' 
+    })
+  }
+
+  // check if name exists
+  const nameExists = persons.find(person => person.name === body.name)
+  if (nameExists) {
+    console.log('Error: name already exists')
+    return response.status(400).json({ 
+      error: 'name must be unique' 
+    })
+  }
+
   const person = {
     id: String(Math.floor(Math.random() * 100000)),
     name: body.name,
