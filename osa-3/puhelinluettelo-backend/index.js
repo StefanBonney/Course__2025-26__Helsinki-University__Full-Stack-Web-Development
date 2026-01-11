@@ -3,7 +3,13 @@ const morgan = require('morgan')
 const app = express()
 
 app.use(express.json())  
-app.use(morgan('tiny'))
+
+// create token to log request body
+morgan.token('postBody', (request) => {
+  return JSON.stringify(request.body)
+})
+// use custom format with body token
+app.use(morgan(':method :url :status :res[content-length] - :response-time ms :postBody'))
 
 
 let persons = [
@@ -56,12 +62,12 @@ app.get('/info', (request, response) => {
 app.post('/api/persons', (request, response) => {
   const body = request.body
   
-  console.log('POST REQUEST')
-  console.log('Body:', body)
+  //console.log('POST REQUEST')
+  //console.log('Body:', body)
 
   // check if name missing
   if (!body.name) {
-    console.log('Error: name missing')
+    //console.log('Error: name missing')
     return response.status(400).json({ 
       error: 'name missing' 
     })
@@ -69,7 +75,7 @@ app.post('/api/persons', (request, response) => {
 
   // check if number missing
   if (!body.number) {
-    console.log('Error: number missing')
+    //console.log('Error: number missing')
     return response.status(400).json({ 
       error: 'number missing' 
     })
@@ -78,7 +84,7 @@ app.post('/api/persons', (request, response) => {
   // check if name exists
   const nameExists = persons.find(person => person.name === body.name)
   if (nameExists) {
-    console.log('Error: name already exists')
+    //console.log('Error: name already exists')
     return response.status(400).json({ 
       error: 'name must be unique' 
     })
