@@ -1,0 +1,15 @@
+GET https://phonebook-backend-mziu.onrender.com/api/persons
+
+###
+
+POST https://phonebook-backend-mziu.onrender.com/api/persons
+Content-Type: application/json
+
+{
+  "name": "test",
+  "number": "123-456-789"
+}
+
+###
+
+DELETE https://phonebook-backend-mziu.onrender.com/api/persons/19936
