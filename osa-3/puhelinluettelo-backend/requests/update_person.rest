@@ -1,0 +1,25 @@
+PUT http://localhost:3001/api/persons/6977db352ffd8341eed85500
+Content-Type: application/json
+
+{
+  "name": "test update",
+  "number": "999"
+}
+
+### Malformatted id test (should be 400 from errorHandler)
+PUT http://localhost:3001/api/persons/123
+Content-Type: application/json
+
+{
+  "name": "X",
+  "number": "0"
+}
+
+### Valid-format but non-existing id (should be 404)
+PUT http://localhost:3001/api/persons/507f1f77bcf86cd799439011
+Content-Type: application/json
+
+{
+  "name": "X",
+  "number": "0"
+}
