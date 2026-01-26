@@ -42,10 +42,10 @@ let persons = [
   }
 ]
 
-app.get('/api/persons', (req, res) => {
-  Person.find({}).then(persons => {
-    res.json(persons)
-  })
+app.get('/api/persons', (req, res, next) => {
+  Person.find({})
+    .then(persons => res.json(persons))
+    .catch(error => next(error))
 })
 
 app.get('/api/persons/:id', (request, response) => {
@@ -68,26 +68,17 @@ app.get('/info', (request, response) => {
   `)
 })
 
-app.post('/api/persons', (request, response) => {
+app.post('/api/persons', (request, response, next) => {
   const body = request.body
-
-  //console.log('POST REQUEST')
-  //console.log('Body:', body)
 
   // check if name missing
   if (!body.name) {
-    //console.log('Error: name missing')
-    return response.status(400).json({
-      error: 'name missing'
-    })
+    return response.status(400).json({ error: 'name missing' })
   }
 
   // check if number missing
   if (!body.number) {
-    //console.log('Error: number missing')
-    return response.status(400).json({
-      error: 'number missing'
-    })
+    return response.status(400).json({ error: 'number missing' })
   }
 
   const person = new Person({
@@ -95,21 +86,31 @@ app.post('/api/persons', (request, response) => {
     number: body.number
   })
 
-  person.save().then(savedPerson => {
-    response.json(savedPerson)
-  })
+  person.save()
+    .then(savedPerson => {
+      response.json(savedPerson)
+    })
+    .catch(error => next(error))
 })
 
-app.delete('/api/persons/:id', (request, response) => {
+app.delete('/api/persons/:id', (request, response, next) => {
   Person.findByIdAndDelete(request.params.id)
-    .then(() => {
-      response.status(204).end()
-    })
-    .catch(error => {
-      console.log(error)
-      response.status(400).json({ error: 'bad request' })
-    })
+    .then(() => response.status(204).end())
+    .catch(error => next(error))
 })
+
+
+const errorHandler = (error, request, response, next) => {
+  console.error(error.message)
+
+  if (error.name === 'CastError') {
+    return response.status(400).send({ error: 'malformatted id' })
+  }
+
+  next(error)
+}
+
+app.use(errorHandler)
 
 const PORT = process.env.PORT || 3001
 app.listen(PORT, () => {
