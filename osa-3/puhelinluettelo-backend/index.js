@@ -52,9 +52,9 @@ app.post('/api/persons', (request, response, next) => {
   const body = request.body
 
   // check if name missing
-  if (!body.name) {
-    return response.status(400).json({ error: 'name missing' })
-  }
+  //if (!body.name) {
+  //  return response.status(400).json({ error: 'name missing' })
+  //}
 
   // check if number missing
   if (!body.number) {
@@ -105,6 +105,9 @@ const errorHandler = (error, request, response, next) => {
   if (error.name === 'CastError') {
     return response.status(400).send({ error: 'malformatted id' })
   }
+  if (error.name === 'ValidationError') {
+  return response.status(400).json({ error: error.message })
+}
 
   next(error)
 }
