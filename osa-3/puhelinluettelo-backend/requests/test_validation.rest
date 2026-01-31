@@ -1,0 +1,17 @@
+### OK (name length >= 3)
+POST http://localhost:3001/api/persons
+Content-Type: application/json
+
+{
+  "name": "Ada",
+  "number": "040-1234567"
+}
+
+### FAIL (name too short)
+POST http://localhost:3001/api/persons
+Content-Type: application/json
+
+{
+  "name": "Al",
+  "number": "040-1234567"
+}
