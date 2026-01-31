@@ -1,0 +1,35 @@
+### OK (valid, should return 200 + saved person)
+POST http://localhost:3001/api/persons
+Content-Type: application/json
+
+{
+  "name": "Valid Person",
+  "number": "040-22334455"
+}
+
+### FAIL (too short)
+POST http://localhost:3001/api/persons
+Content-Type: application/json
+
+{
+  "name": "Too Short",
+  "number": "09-123"
+}
+
+### FAIL (wrong prefix)
+POST http://localhost:3001/api/persons
+Content-Type: application/json
+
+{
+  "name": "Bad Prefix",
+  "number": "1-22334455"
+}
+
+### FAIL (two hyphens)
+POST http://localhost:3001/api/persons
+Content-Type: application/json
+
+{
+  "name": "Too Many Hyphens",
+  "number": "10-22-334455"
+}
