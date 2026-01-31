@@ -1,0 +1,25 @@
+### OK: content length >= 5
+POST http://localhost:3001/api/notes
+Content-Type: application/json
+
+{
+  "content": "valid note",
+  "important": true
+}
+
+### FAIL: content too short (minlength 5)
+POST http://localhost:3001/api/notes
+Content-Type: application/json
+
+{
+  "content": "hey",
+  "important": true
+}
+
+### FAIL: missing content (required)
+POST http://localhost:3001/api/notes
+Content-Type: application/json
+
+{
+  "important": true
+}
