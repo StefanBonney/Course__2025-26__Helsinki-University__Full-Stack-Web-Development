@@ -1,0 +1,4 @@
+GET http://localhost:3001/api/persons/6974cbb883f2275da53d5f66
+
+### Malformatted id should be 400
+GET http://localhost:3001/api/persons/123
