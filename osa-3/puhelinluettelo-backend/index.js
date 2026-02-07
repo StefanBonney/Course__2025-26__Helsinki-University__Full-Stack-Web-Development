@@ -2,12 +2,12 @@ require('dotenv').config()
 
 const express = require('express')
 const morgan = require('morgan')
-const cors = require('cors')  
+const cors = require('cors')
 const Person = require('./models/person')
 
 const app = express()
 
-app.use(express.json())  
+app.use(express.json())
 app.use(cors())
 app.use(express.static('dist'))
 
@@ -52,9 +52,9 @@ app.post('/api/persons', (request, response, next) => {
   const body = request.body
 
   // check if name missing
-  if (!body.name) {
-    return response.status(400).json({ error: 'name missing' })
-  }
+  //if (!body.name) {
+  //  return response.status(400).json({ error: 'name missing' })
+  //}
 
   // check if number missing
   if (!body.number) {
@@ -104,6 +104,9 @@ const errorHandler = (error, request, response, next) => {
 
   if (error.name === 'CastError') {
     return response.status(400).send({ error: 'malformatted id' })
+  }
+  if (error.name === 'ValidationError') {
+    return response.status(400).json({ error: error.message })
   }
 
   next(error)
